@@ -27,7 +27,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view latest >/dev/null 2>&1 || \
-            gh release create latest --title "latest" \
+          REPO="${{ github.repository }}"
+          gh release view latest --repo "$REPO" >/dev/null 2>&1 || \
+            gh release create latest --repo "$REPO" --title "latest" \
               --notes "最新离线镜像包 ikuai-ip-group-sync.tar.gz，导入后按 README 部署"
-          gh release upload latest release/ikuai-ip-group-sync.tar.gz --clobber
+          gh release upload latest release/ikuai-ip-group-sync.tar.gz --repo "$REPO" --clobber
