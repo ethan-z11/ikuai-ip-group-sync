@@ -1,0 +1,33 @@
+name: mirror-image
+
+# 公开分发仓：把 GHCR 上的镜像导出成离线 tar，挂到本仓 latest Release
+# 不需要任何跨仓令牌；前提是该 GHCR 包已设为 Public
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+    steps:
+      - name: Pull image
+        run: docker pull ghcr.io/ethan-z11/ikuai-ip-group-sync:latest
+
+      - name: Export offline tar
+        run: |
+          mkdir -p release
+          docker save ghcr.io/ethan-z11/ikuai-ip-group-sync:latest | gzip > release/ikuai-ip-group-sync.tar.gz
+          ls -lh release/
+
+      - name: Upload to this repo release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view latest >/dev/null 2>&1 || \
+            gh release create latest --title "latest" \
+              --notes "最新离线镜像包 ikuai-ip-group-sync.tar.gz，导入后按 README 部署"
+          gh release upload latest release/ikuai-ip-group-sync.tar.gz --clobber
