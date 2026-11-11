@@ -3,7 +3,6 @@
 爱快（iKuai）IP 组 / 运营商组自动同步工具：把 IP 段清单自动写入 iKuai 的 IP 分组与自定义运营商，支持定时同步、增量对比、MQTT / Home Assistant。
 
 > 本仓库为**分发仓库**，只提供文档与已构建的镜像，不含源代码。
-
 ## 功能
 ### 作用：通过IP限制，禁止规则外IP对自己的访问，从而另端口暴露在公网大大提高安全性。ACL规则限制设备对规则外IP的访问，例中了任何侵入脚本，也是需要回传境外，如此路不通，脚本自然第一步就原地去世。运营商组可作为科学上网等分流网络放行。
 ### IP限制可以具体到城市，但建议到省份即可，毕竟IP不能精确到非常精准；本项目有PRO规格版本，内置已设定好的ADG分流进行分流国内外；
@@ -17,12 +16,14 @@
 - 试用全功能7天，7天后恢复最基础的单组默认国内ipv4和单组默认国内ipv6功能，仍然可以作为防御关。
 - [请作者和咖啡](https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42660432&loadingShow=1&noTitleBar=1#noReffer=true&msource=merchant_share)可以恢复全功能，私聊客服告知客服你的ID，24小时内客服发送key。
 - 选择PRO版增加adg接管功能，接管后pro项目接管维护，从而实现设备实现国内外分流目的。
-  
+
+![截图1](images/1.png)
+![截图2](images/2.png)
+![截图3](images/3.png)
+![截图4](images/4.png)
 
 ## 部署
-
 ### 方式一：Docker Compose（在线拉取镜像）
-
 ```yaml
 services:
   ikuai-ip-group-sync:
@@ -34,7 +35,6 @@ services:
     volumes:
       - ./data-runtime:/app/runtime
 ```
-
 ```bash
 mkdir -p data-runtime
 docker compose up -d
@@ -49,20 +49,15 @@ docker compose up -d
 2. 主页「+ 添加」绑定路由器：填内网 IP，点「测试登录」会自动识别 V3/V4 与协议
 3. 「IP 组」「运营商组」页勾选需要的源，点「添加到目标」写入任务
 4. 设置定时（可多选星期），保存后即可自动同步
-
 > 说明：运营商组写入的是 iKuai「自定义运营商」，只接受 IPv4 地址段；IPv6 源请加到「IP 组」。
-
 ## 授权
-
 - 试用期内可直接使用全部功能；到期后保留基础 IPv4 国内同步
 - 授权码格式 `PAY-<安装ID>-<签名>`，与安装 ID 绑定，换机 / 删除 `data-runtime/install.json` 后需要重新获取
 - 购买 / 续期请联系作者
-
 ## 目录说明
 
 `data-runtime` 为运行时数据目录，请务必持久化挂载
 
 
 ---
-
 ☕ 如果这个工具帮到了你，可以请我喝杯咖啡：[点我下单](https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42660432&loadingShow=1&noTitleBar=1#noReffer=true&msource=merchant_share)
